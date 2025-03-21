@@ -87,7 +87,7 @@ roc_auc_orig = auc(fpr_orig, tpr_orig)
 fpr_smote, tpr_smote, _ = roc_curve(y_test_orig, y_probs_smote)
 roc_auc_smote = auc(fpr_smote, tpr_smote)
 
-# ROC Curve Comparison**
+# ROC Curve Comparison
 plt.figure(figsize=(8, 6))
 plt.plot(fpr_orig, tpr_orig, label=f"Without SMOTE (AUC = {roc_auc_orig:.2f})", color='blue')
 plt.plot(fpr_smote, tpr_smote, label=f"With SMOTE (AUC = {roc_auc_smote:.2f})", color='red')
@@ -96,41 +96,13 @@ plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.title("ROC Curve Comparison: With vs Without SMOTE")
 plt.legend()
-plt.savefig("roc_comparison.png", dpi=300)
 plt.show()
 
-# Precision-Recall Curve Comparison**
-plt.figure(figsize=(8, 6))
-plt.plot(recall_orig, precision_orig, label=f"Without SMOTE (AUC = {pr_auc_orig:.2f})", color='blue')
-plt.plot(recall_smote, precision_smote, label=f"With SMOTE (AUC = {pr_auc_smote:.2f})", color='red')
-plt.xlabel("Recall")
-plt.ylabel("Precision")
-plt.title("Precision-Recall Curve Comparison: With vs Without SMOTE")
-plt.legend()
-plt.savefig("pr_comparison.png", dpi=300)
-plt.show()
-
-# Feature Importance Comparison**
-plt.figure(figsize=(8, 6))
-sns.barplot(x=best_model_orig.feature_importances_, y=features, palette="Blues_r")
-plt.xlabel("Feature Importance Score")
-plt.ylabel("Features")
-plt.title("Feature Importance Without SMOTE")
-plt.savefig("feature_importance_orig.png", dpi=300)
-plt.show()
-
-plt.figure(figsize=(8, 6))
-sns.barplot(x=best_model_smote.feature_importances_, y=features, palette="Reds_r")
-plt.xlabel("Feature Importance Score")
-plt.ylabel("Features")
-plt.title("Feature Importance With SMOTE")
-plt.savefig("feature_importance_smote.png", dpi=300)
-plt.show()
-
-#AUC Per Participant**
+# AUC Per Participant
 gkf = GroupKFold(n_splits=5)
 participant_aucs_orig = {}
-participant_aucs_smote = {}
+y_test_pooled = []
+y_probs_pooled = []
 
 for train_idx, test_idx in gkf.split(X, y, groups):
     X_train_fold, X_test_fold = X[train_idx], X[test_idx]
@@ -140,21 +112,39 @@ for train_idx, test_idx in gkf.split(X, y, groups):
     y_probs_fold_orig = best_model_orig.predict_proba(X_test_fold)[:, 1]
     auc_orig = auc(*roc_curve(y_test_fold, y_probs_fold_orig)[:2])
 
-    best_model_smote.fit(X_train_fold, y_train_fold)
-    y_probs_fold_smote = best_model_smote.predict_proba(X_test_fold)[:, 1]
-    auc_smote = auc(*roc_curve(y_test_fold, y_probs_fold_smote)[:2])
+    unique_participants = np.unique(groups[test_idx])
+    for participant in unique_participants:
+        participant_aucs_orig[participant] = auc_orig
 
-    participant_aucs_orig[np.unique(groups[test_idx])[0]] = auc_orig
-    participant_aucs_smote[np.unique(groups[test_idx])[0]] = auc_smote
+    # Collect test data for pooled AUC computation
+    y_test_pooled.extend(y_test_fold)
+    y_probs_pooled.extend(y_probs_fold_orig)
+
+# Convert to numpy arrays
+y_test_pooled = np.array(y_test_pooled)
+y_probs_pooled = np.array(y_probs_pooled)
+
+# Compute overall AUC using pooled test set
+fpr_pooled, tpr_pooled, _ = roc_curve(y_test_pooled, y_probs_pooled)
+roc_auc_pooled = auc(fpr_pooled, tpr_pooled)
+
+# Compute average participant AUC
+avg_auc_orig = np.mean(list(participant_aucs_orig.values()))
+
+print("AUC per Participant (Without SMOTE):")
+for participant, auc_score in participant_aucs_orig.items():
+    print(f"{participant}: {auc_score:.4f}")
+
+print("\nRecalculated Overall AUC using Pooled Test Set: {:.4f}".format(roc_auc_pooled))
+print("Original Overall AUC from ROC Curve: {:.4f}".format(roc_auc_orig))
+print("Average Participant AUC: {:.4f}".format(avg_auc_orig))
 
 # Plot AUC per participant
 plt.figure(figsize=(8, 6))
 plt.bar(participant_aucs_orig.keys(), participant_aucs_orig.values(), color='blue', label="Without SMOTE")
-plt.bar(participant_aucs_smote.keys(), participant_aucs_smote.values(), color='red', alpha=0.6, label="With SMOTE")
 plt.xlabel("Participant")
 plt.ylabel("AUC Score")
 plt.title("AUC per Participant (XGBoost)")
 plt.xticks(rotation=45)
 plt.legend()
-plt.savefig("auc_per_participant.png", dpi=300)
 plt.show()
