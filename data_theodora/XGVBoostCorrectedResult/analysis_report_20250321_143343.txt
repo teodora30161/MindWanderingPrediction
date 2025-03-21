@@ -1,0 +1,55 @@
+==== MIND WANDERING CLASSIFICATION REPORT ====
+
+Date: 2025-03-21 14:34:09
+
+== DATA SUMMARY ==
+Total samples: 1295
+Clean samples: 1022
+Features used: BV, AE, pupil_size_median, BV_AE, BV_ratio_pupil, AE_pupil
+Target variable: ON_OFF
+Group variable: subj
+
+== CLASS DISTRIBUTION ==
+Original training set: [612 205]
+SMOTE-resampled training set: [612 306]
+Test set: [153  52]
+
+== MODEL PERFORMANCE ==
+Original model - Balanced Accuracy: 0.6406, ROC AUC: 0.5931, F1 Score: 0.4755
+SMOTE model - Balanced Accuracy: 0.6324, ROC AUC: 0.6003, F1 Score: 0.4561
+
+== LEAVE-ONE-SUBJECT-OUT RESULTS ==
+AUC per Participant:
+sub_01: 0.4949
+sub_02: 0.5440
+sub_03: 0.7310
+sub_04: 0.7498
+sub_05: 0.6240
+sub_06: 0.5148
+sub_07: 0.5348
+sub_08: 0.5303
+sub_09: 0.3830
+sub_10: 0.5463
+
+LOSO Pooled AUC: 0.5034
+
+== BEST HYPERPARAMETERS ==
+Original model:
+  max_depth: 5
+  learning_rate: 0.04405027035129971
+  n_estimators: 590
+  min_child_weight: 10
+  gamma: 0.39930921626040733
+  subsample: 0.5168016683862682
+  colsample_bytree: 0.9108612975809616
+  scale_pos_weight: 8.911304528291074
+
+SMOTE model:
+  max_depth: 9
+  learning_rate: 0.037646941543091776
+  n_estimators: 481
+  min_child_weight: 2
+  gamma: 0.7408232207753052
+  subsample: 0.5608885060191463
+  colsample_bytree: 0.8765236156672424
+  scale_pos_weight: 2.159831160854249

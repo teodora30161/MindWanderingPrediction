@@ -1,0 +1,118 @@
+==== MIND WANDERING CLASSIFICATION REPORT ====
+
+Date: 2025-03-21 15:59:10
+
+== DATA SUMMARY ==
+Total samples: 1295
+Clean samples: 1022
+Features used: BV, AE, pupil_size_median, BV_AE, BV_ratio_pupil, AE_pupil
+Target variable: ON_OFF
+Group variable: subj
+
+== CLASS DISTRIBUTION ==
+Original training set: [612 205]
+SMOTE-resampled training set: [612 306]
+Test set: [153  52]
+
+== SAMPLE PREDICTED PROBABILITIES ==
+Original Model:
+0.7076, 0.2719, 0.6072, 0.1072, 0.1863, 0.0772, 0.3011, 0.2301, 0.6084, 0.5076
+SMOTE Model:
+0.7071, 0.1892, 0.7659, 0.0426, 0.1125, 0.0405, 0.4209, 0.1981, 0.4831, 0.2963
+
+== MODEL PERFORMANCE ==
+Original model - Balanced Accuracy: 0.6322, ROC AUC: 0.6063, F1 Score: 0.4576
+SMOTE model - Balanced Accuracy: 0.6091, ROC AUC: 0.5858, F1 Score: 0.4341
+
+Calibrated Original model - Balanced Accuracy: 0.4998, ROC AUC: 0.6183, F1 Score: 0.0357
+Calibrated SMOTE model - Balanced Accuracy: 0.5246, ROC AUC: 0.5684, F1 Score: 0.2105
+
+== CALIBRATION METRICS ==
+Original Model Calibration (Mean Predicted vs. Fraction of Positives):
+0.0508 -> 0.2424
+0.1484 -> 0.2000
+0.2398 -> 0.1034
+0.3475 -> 0.1852
+0.4408 -> 0.1600
+0.5429 -> 0.4400
+0.6464 -> 0.4348
+0.7379 -> 0.2500
+0.8335 -> 0.5000
+
+SMOTE Model Calibration (Mean Predicted vs. Fraction of Positives):
+0.0390 -> 0.2564
+
+0.1603 -> 0.0769
+
+0.2514 -> 0.2692
+
+0.3560 -> 0.0909
+
+0.4401 -> 0.2000
+
+0.5504 -> 0.3889
+
+0.6497 -> 0.4000
+
+0.7481 -> 0.3529
+
+0.8281 -> 0.2727
+
+0.9221 -> 0.3333
+
+== LEAVE-ONE-SUBJECT-OUT RESULTS ==
+AUC per Participant:
+sub_01: 0.4995
+sub_02: 0.5529
+sub_03: 0.7251
+sub_04: 0.7435
+sub_05: 0.6404
+sub_06: 0.4812
+sub_07: 0.5614
+sub_08: 0.5320
+sub_09: 0.3950
+sub_10: 0.6145
+
+LOSO Pooled AUC: 0.5068
+
+== BEST HYPERPARAMETERS ==
+Original model:
+  max_depth: 9
+  learning_rate: 0.06611724956090695
+  n_estimators: 159
+  min_child_weight: 8
+  gamma: 0.846784973043448
+  subsample: 0.5945262792907464
+  colsample_bytree: 0.9007324208981374
+  scale_pos_weight: 2.7468139924848853
+
+SMOTE model:
+  max_depth: 10
+  learning_rate: 0.026586493132180394
+  n_estimators: 893
+  min_child_weight: 9
+  gamma: 0.5396574625317623
+  subsample: 0.6771069014907957
+  colsample_bytree: 0.6576335141855858
+  scale_pos_weight: 2.8002149904716864
+== FEATURE IMPORTANCE (Original Model) ==
+BV: 0.1641
+AE: 0.1692
+pupil_size_median: 0.1575
+BV_AE: 0.1799
+BV_ratio_pupil: 0.1615
+AE_pupil: 0.1679
+
+== FEATURE IMPORTANCE (SMOTE Model) ==
+BV: 0.1670
+
+AE: 0.1599
+
+pupil_size_median: 0.1735
+
+BV_AE: 0.1681
+
+BV_ratio_pupil: 0.1663
+
+AE_pupil: 0.1653
+
