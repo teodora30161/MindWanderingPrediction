@@ -1,0 +1,18 @@
+{
+    "mean_metric": 0.5751694320619647,
+    "metric_name": "AUC",
+    "fold_metrics": [
+        0.5852509250693803,
+        0.5978756638550453,
+        0.5669468869778077,
+        0.532178505106778,
+        0.5935951793008122
+    ],
+    "config": {
+        "use_smote": false,
+        "model_type": "rf",
+        "cv_type": "grouped",
+        "n_features": 10,
+        "metric": "auc"
+    }
+}

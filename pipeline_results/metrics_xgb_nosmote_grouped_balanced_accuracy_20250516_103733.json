@@ -1,0 +1,18 @@
+{
+    "mean_metric": 0.5320768562183178,
+    "metric_name": "Balanced Accuracy",
+    "fold_metrics": [
+        0.5386794634597595,
+        0.5537488284910965,
+        0.526202209553258,
+        0.5376769962859795,
+        0.5040767833014956
+    ],
+    "config": {
+        "use_smote": false,
+        "model_type": "xgb",
+        "cv_type": "grouped",
+        "n_features": 10,
+        "metric": "balanced_accuracy"
+    }
+}
