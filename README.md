@@ -47,6 +47,7 @@ This reflects person-specific dynamics of mind-wandering.
 
 
 CSV DATA EXTRACTION:
+   ```
                 ┌─────────────────────────────┐
                 │   Raw Eye-Tracking Data      │
                 │   (per subject/session)      │
@@ -86,3 +87,4 @@ CSV DATA EXTRACTION:
                 │     Final Merged Feature CSV    │
                 │   (one row per probe event)     │
                 └────────────────────────────────┘
+```
